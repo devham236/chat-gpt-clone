@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 
 const App = () => {
-  const [sidebarOpened, setSidebarOpened] = useState(true)
+  const [sidebarOpened, setSidebarOpened] = useState(false)
 
   const array = new Array(5).fill("item")
 
@@ -52,7 +52,30 @@ const App = () => {
         </div>
       </section>
 
-      <section className="chat-div w-full h-full p-3"></section>
+      <section
+        className={`chat-div flex flex-col h-full ${
+          sidebarOpened ? "w-[calc(100%-350px)]" : "w-full"
+        }`}
+      >
+        <div className="w-full h-[80%] flex items-center justify-center p-3 text-white">
+          <div className="flex flex-col items-center">
+            <i className="fa-brands fa-react text-4xl mb-2"></i>
+            <h1 className="text-2xl font-bold">How can I help you today ?</h1>
+          </div>
+        </div>
+        <div className="w-full h-[20%] flex items-center justify-center p-3 border-t-2">
+          <div className="w-[50%] flex items-center border-2 border-[#ececf1] border-opacity-50 px-3 py-3 rounded-md">
+            <input
+              type="text"
+              placeholder="Message ChatGPT"
+              className="w-full px-3 py-2 bg-transparent outline-none text-white"
+            />
+            <div className="bg-[#ececf1] px-3 py-2 rounded-md cursor-pointer opacity-50 hover:opacity-100 duration-300">
+              <i className="fa-solid fa-arrow-up"></i>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
