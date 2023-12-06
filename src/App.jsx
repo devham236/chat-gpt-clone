@@ -5,6 +5,24 @@ const App = () => {
 
   const array = new Array(5).fill("item")
 
+  const getMessage = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/completions", {
+        method: "POST",
+        body: JSON.stringify({
+          message: "hello how are you?",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      const data = await response.json()
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div className="w-[100vw] h-[100vh] bg-[#343541] flex">
       <section
@@ -70,7 +88,10 @@ const App = () => {
               placeholder="Message ChatGPT"
               className="w-full px-3 py-2 bg-transparent outline-none text-white"
             />
-            <div className="bg-[#ececf1] px-3 py-2 rounded-md cursor-pointer opacity-50 hover:opacity-100 duration-300">
+            <div
+              onClick={getMessage}
+              className="bg-[#ececf1] px-3 py-2 rounded-md cursor-pointer opacity-50 hover:opacity-100 duration-300"
+            >
               <i className="fa-solid fa-arrow-up"></i>
             </div>
           </div>
