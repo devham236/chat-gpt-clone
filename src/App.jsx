@@ -124,11 +124,9 @@ const App = () => {
               <div key={index} className="w-full flex mb-6 last:mb-0">
                 <div
                   className={`bg-${
-                    chatMessage.role === "user" ? "orange" : "blue"
-                  }-500 rounded-full mr-2`}
-                >
-                  <i className="fa-brands fa-react text-2xl mb-2"></i>
-                </div>
+                    chatMessage.role === "user" && "orange"
+                  }-500 rounded-full mr-2 w-[45px] h-[45px]`}
+                ></div>
                 <div className="">
                   <p className="font-bold">
                     {chatMessage.role === "user" ? "You" : "ChatGPT"}
