@@ -1,9 +1,11 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 const App = () => {
   const [sidebarOpened, setSidebarOpened] = useState(false)
   const [input, setInput] = useState("")
   const [message, setMessage] = useState(null)
+  const [previousChats, setPreviousChats] = useState([])
+  const [currentTitle, setCurrentTitle] = useState(null)
 
   const array = new Array(5).fill("item")
 
@@ -25,7 +27,38 @@ const App = () => {
     }
   }
 
-  console.log(message)
+  const createNewChat = () => {
+    setMessage(null)
+    setInput("")
+    setCurrentTitle(null)
+  }
+
+  const changeChat = (title) => {
+    setCurrentTitle(title)
+    setMessage(null)
+    setInput("")
+  }
+
+  useEffect(() => {
+    if (!currentTitle && input && message) setCurrentTitle(input)
+    if (currentTitle && input && message) {
+      setPreviousChats((prevChats) => [
+        ...prevChats,
+        { title: currentTitle, role: "user", content: input },
+        { title: currentTitle, role: message.role, content: message.content },
+      ])
+    }
+  }, [message, currentTitle])
+
+  console.log(previousChats)
+
+  const currentChat = previousChats.filter(
+    (prevChat, index) => prevChat.title === currentTitle
+  )
+  const allTitles = previousChats.map((prevChat) => prevChat.title)
+  const uniqueTitles = Array.from(new Set(allTitles))
+
+  console.log(uniqueTitles)
 
   return (
     <div className="w-[100vw] h-[100vh] bg-[#343541] flex">
@@ -43,7 +76,10 @@ const App = () => {
             <i className="fa-brands fa-react text-3xl mr-1"></i>
             <h1 className="ml-1 text-xl font-bold">New Chat</h1>
           </div>
-          <div className="cursor-pointer opacity-50 hover:opacity-100 duration-300">
+          <div
+            onClick={createNewChat}
+            className="cursor-pointer opacity-50 hover:opacity-100 duration-300"
+          >
             <i className="fa-regular fa-square-plus text-3xl"></i>
           </div>
         </div>
@@ -53,12 +89,13 @@ const App = () => {
             sidebarOpened ? "" : "hidden"
           }`}
         >
-          {array.map((item, index) => (
+          {uniqueTitles?.map((title, index) => (
             <li
               key={index}
+              onClick={() => changeChat(title)}
               className="w-full hover:bg-[#656570] duration-300 p-3 mb-1 last:mb-0 rounded-md cursor-pointer"
             >
-              Test
+              {title}
             </li>
           ))}
         </ul>
@@ -80,15 +117,26 @@ const App = () => {
         }`}
       >
         <div className="w-full h-[80%] flex items-center justify-center p-3 text-white">
-          <div className="flex flex-col items-center">
-            <i className="fa-brands fa-react text-4xl mb-2"></i>
-            <h1 className="text-2xl font-bold">How can I help you today ?</h1>
-          </div>
+          {!currentTitle && (
+            <div className="flex flex-col items-center">
+              <i className="fa-brands fa-react text-4xl mb-2"></i>
+              <h1 className="text-2xl font-bold">How can I help you today ?</h1>
+            </div>
+          )}
+          <ul className="feed">
+            {currentChat?.map((chatMessage, index) => (
+              <li key={index}>
+                <p>{chatMessage.role}</p>
+                <p>{chatMessage.content}</p>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="w-full h-[20%] flex items-center justify-center p-3 border-t-2">
           <div className="w-[50%] flex items-center border-2 border-[#ececf1] border-opacity-50 px-3 py-3 rounded-md">
             <input
               type="text"
+              value={input}
               placeholder="Message ChatGPT"
               className="w-full px-3 py-2 bg-transparent outline-none text-white"
               onChange={(e) => setInput(e.target.value)}
