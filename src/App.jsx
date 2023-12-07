@@ -2,6 +2,8 @@ import React, { useState } from "react"
 
 const App = () => {
   const [sidebarOpened, setSidebarOpened] = useState(false)
+  const [input, setInput] = useState("")
+  const [message, setMessage] = useState(null)
 
   const array = new Array(5).fill("item")
 
@@ -10,18 +12,20 @@ const App = () => {
       const response = await fetch("http://localhost:8000/completions", {
         method: "POST",
         body: JSON.stringify({
-          message: "hello how are you?",
+          message: input,
         }),
         headers: {
           "Content-Type": "application/json",
         },
       })
       const data = await response.json()
-      console.log(data)
+      setMessage(data.choices[0].message)
     } catch (error) {
       console.log(error)
     }
   }
+
+  console.log(message)
 
   return (
     <div className="w-[100vw] h-[100vh] bg-[#343541] flex">
@@ -87,6 +91,7 @@ const App = () => {
               type="text"
               placeholder="Message ChatGPT"
               className="w-full px-3 py-2 bg-transparent outline-none text-white"
+              onChange={(e) => setInput(e.target.value)}
             />
             <div
               onClick={getMessage}
