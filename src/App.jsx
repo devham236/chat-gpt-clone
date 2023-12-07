@@ -7,7 +7,7 @@ const App = () => {
   const [previousChats, setPreviousChats] = useState([])
   const [currentTitle, setCurrentTitle] = useState(null)
 
-  const array = new Array(5).fill("item")
+  // const array = new Array(5).fill("item")
 
   const getMessage = async () => {
     try {
@@ -50,14 +50,11 @@ const App = () => {
     }
   }, [message, currentTitle])
 
-  console.log(previousChats)
-
   const currentChat = previousChats.filter(
-    (prevChat, index) => prevChat.title === currentTitle
+    (prevChat) => prevChat.title === currentTitle
   )
   const allTitles = previousChats.map((prevChat) => prevChat.title)
   const uniqueTitles = Array.from(new Set(allTitles))
-  console.log(uniqueTitles)
 
   return (
     <div className="w-[100vw] h-[100vh] bg-[#343541] flex">
@@ -88,7 +85,7 @@ const App = () => {
             sidebarOpened ? "" : "hidden"
           }`}
         >
-          {/* {uniqueTitles?.map((title, index) => (
+          {uniqueTitles?.map((title, index) => (
             <li
               key={index}
               onClick={() => changeChat(title)}
@@ -96,7 +93,7 @@ const App = () => {
             >
               {title}
             </li>
-          ))} */}
+          ))}
         </ul>
         <div
           onClick={() => setSidebarOpened(!sidebarOpened)}
@@ -122,14 +119,25 @@ const App = () => {
               <h1 className="text-2xl font-bold">How can I help you today ?</h1>
             </div>
           )}
-          <ul className="feed">
+          <div className="feed h-full max-h-full overflow-y-auto">
             {currentChat?.map((chatMessage, index) => (
-              <li key={index}>
-                <p>{chatMessage.role}</p>
-                <p>{chatMessage.content}</p>
-              </li>
+              <div key={index} className="w-full flex mb-6 last:mb-0">
+                <div
+                  className={`bg-${
+                    chatMessage.role === "user" ? "orange" : "blue"
+                  }-500 rounded-full mr-2`}
+                >
+                  <i className="fa-brands fa-react text-2xl mb-2"></i>
+                </div>
+                <div className="">
+                  <p className="font-bold">
+                    {chatMessage.role === "user" ? "You" : "ChatGPT"}
+                  </p>
+                  <p className="opacity-75">{chatMessage.content}</p>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
         <div className="w-full h-[20%] flex items-center justify-center p-3 border-t-2">
           <div className="w-[50%] flex items-center border-2 border-[#ececf1] border-opacity-50 px-3 py-3 rounded-md">
