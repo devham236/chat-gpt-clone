@@ -57,7 +57,6 @@ const App = () => {
   )
   const allTitles = previousChats.map((prevChat) => prevChat.title)
   const uniqueTitles = Array.from(new Set(allTitles))
-
   console.log(uniqueTitles)
 
   return (
@@ -89,7 +88,7 @@ const App = () => {
             sidebarOpened ? "" : "hidden"
           }`}
         >
-          {uniqueTitles?.map((title, index) => (
+          {/* {uniqueTitles?.map((title, index) => (
             <li
               key={index}
               onClick={() => changeChat(title)}
@@ -97,7 +96,7 @@ const App = () => {
             >
               {title}
             </li>
-          ))}
+          ))} */}
         </ul>
         <div
           onClick={() => setSidebarOpened(!sidebarOpened)}
