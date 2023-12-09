@@ -8,6 +8,7 @@ const App = () => {
   const [currentTitle, setCurrentTitle] = useState(null)
 
   // const array = new Array(5).fill("item")
+  console.log("test")
 
   const getMessage = async () => {
     try {
